@@ -52,7 +52,18 @@ ota_password: "admin"
 ### Schritt 3: Flashen ⚡
 Verbinde deinen ESP32 und flashe die Firmware. Nutze den Log-Output zur Verifizierung.
 
-## 💡 4. Funktionsweise der Logik
+## 🔍 4. Zähler-ID (wmid) herausfinden
+
+Falls du deine Zähler-ID nicht kennst, kannst du sie über die Logs ermitteln:
+
+1. Setze in deiner YAML den Parameter `log_unknown: True` im Abschnitt `wmbus:`.
+2. Stelle das globale `log_level` auf `DEBUG`.
+3. Flashe den ESP32 und öffne das Log-Fenster.
+4. Sobald ein Funkpaket empfangen wird, erscheint eine Meldung wie:
+   `Using driver 'izar' for ID [0x12345678] RSSI: -75 dBm...`
+5. Kopiere die ID (z.B. `0x12345678`) und trage sie in deine `secrets.yaml` als `watermeter_id` ein.
+
+## 💡 5. Funktionsweise der Logik
 
 ### 🔄 Baseline-Initialisierung
 Um Fehlmessungen zu vermeiden, nutzt die Firmware eine **Baseline-Logik**:
@@ -64,7 +75,7 @@ Um Fehlmessungen zu vermeiden, nutzt die Firmware eine **Baseline-Logik**:
 Falls die Werte abweichen, nutze in HA den Dienst:
 `esphome.water_meter_esp_set_stats` mit den Variablen `h` (Stunde) und `d` (Tag).
 
-## 📊 5. Home Assistant Energie-Dashboard
+## 📊 6. Home Assistant Energie-Dashboard
 Die Sensoren sind vorkonfiguriert für LTS (Long Term Statistics):
 * `device_class: water`
 * `state_class: total_increasing`
@@ -72,7 +83,7 @@ Die Sensoren sind vorkonfiguriert für LTS (Long Term Statistics):
 
 > **Hinweis**: Es kann bis zu **2 Stunden** dauern, bis HA die Statistiken für das Energie-Dashboard berechnet hat.
 
-## ⚠️ 6. Fehlerbehebung (Troubleshooting)
+## ⚠️ 7. Fehlerbehebung (Troubleshooting)
 
 | Problem | Ursache | Lösung | 
 | ----- | ----- | ----- | 
